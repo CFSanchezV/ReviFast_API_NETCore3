@@ -29,7 +29,7 @@ namespace Revifast.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            var connection = Configuration.GetConnectionString("DefaultConnection");
+            var connection = Configuration.GetConnectionString("ProductionConnection");
 
             // conexion a la base de datos, referenciar a Revifast.Data
             // se cambia la migracion a Revifast.Data con MigrationsAssembly
@@ -38,12 +38,12 @@ namespace Revifast.Api
 
             services.AddDbContext<DbRevifastContext>(options =>
             options.UseSqlServer(
-                connection, migration => migration.MigrationsAssembly("Revifast.Api")));
+                connection, migration => migration.MigrationsAssembly("Revifast.Data")));
 
             services.AddCors(options => options.AddPolicy("pelusa", builder => builder.WithOrigins("*").WithHeaders("*").WithMethods("*")));
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Revifast API", Version = "v1" });
             });
         }
 
@@ -73,7 +73,7 @@ namespace Revifast.Api
 
             app.UseSwagger();
             app.UseSwaggerUI(c=>
-            { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
+            { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Revifast API V1"); });
 
         }
     }
